@@ -755,7 +755,11 @@ APU_DECLARE(apr_status_t) apr_password_validate(const char *passwd,
              * call to crypt().
              */
             crypt_mutex_lock();
+#if APR_HAVE_CRYPT_H
             crypt_pw = crypt(passwd, hash);
+#else
+            crypt_pw = NULL;
+#endif
             if (!crypt_pw) {
                 rv = APR_EMISMATCH;
             }
